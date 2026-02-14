@@ -28,6 +28,7 @@ public static class Program
             config.AddCommand<LogCommand>("log");
             config.AddCommand<DiffCommand>("diff");
             config.AddCommand<RestoreCommand>("restore");
+            config.AddCommand<BranchCommand>("branch");
         });
 
         return app.RunAsync(args);

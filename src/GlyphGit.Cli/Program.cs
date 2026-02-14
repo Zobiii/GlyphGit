@@ -29,6 +29,7 @@ public static class Program
             config.AddCommand<DiffCommand>("diff");
             config.AddCommand<RestoreCommand>("restore");
             config.AddCommand<BranchCommand>("branch");
+            config.AddCommand<SwitchCommand>("switch");
         });
 
         return app.RunAsync(args);

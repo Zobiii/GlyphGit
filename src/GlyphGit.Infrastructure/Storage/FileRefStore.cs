@@ -68,6 +68,15 @@ public sealed class FileRefStore : IRefStore
         await FileHelpers.AtomicWriteAsync(refPath, Encoding.UTF8.GetBytes($"{commitHash}\n"), cancellationToken);
     }
 
+    public async Task SetHeadReferenceAsync(string branchName, CancellationToken cancellationToken = default)
+    {
+        ValidateBranchName(branchName);
+        await FileHelpers.AtomicWriteAsync(
+            _paths.HeadPath,
+            Encoding.UTF8.GetBytes($"ref: refs/heads/{branchName}\n"),
+            cancellationToken);
+    }
+
     public Task<IReadOnlyList<string>> ListBranchesAsync(CancellationToken cancellationToken = default)
     {
         if (!Directory.Exists(_paths.RefsHeadsPath))
@@ -84,12 +93,11 @@ public sealed class FileRefStore : IRefStore
         return Task.FromResult<IReadOnlyList<string>>(branches);
     }
 
-    public async Task<bool> BranchExistsAsync(string branchName, CancellationToken cancellationToken = default)
+    public Task<bool> BranchExistsAsync(string branchName, CancellationToken cancellationToken = default)
     {
         ValidateBranchName(branchName);
         var refPath = ToRefPath($"refs/heads/{branchName}");
-        _ = await Task.FromResult(0);
-        return File.Exists(refPath);
+        return Task.FromResult(File.Exists(refPath));
     }
 
     public async Task<string?> ReadBranchCommitAsync(string branchName, CancellationToken cancellationToken = default)

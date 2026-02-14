@@ -13,4 +13,9 @@ public interface IRefStore
     Task<bool> BranchExistsAsync(string branchName, CancellationToken cancellationToken = default);
     Task<string?> ReadBranchCommitAsync(string branchName, CancellationToken cancellationToken = default);
     Task CreateBranchAsync(string branchName, string? commitHash, CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<string>> ListTagsAsync(CancellationToken cancellationToken = default);
+    Task<bool> TagExistsAsync(string tagName, CancellationToken cancellationToken = default);
+    Task<string?> ReadTagCommitAsync(string tagName, CancellationToken cancellationToken = default);
+    Task CreateTagAsync(string tagName, string commitHash, CancellationToken cancellationToken = default);
 }

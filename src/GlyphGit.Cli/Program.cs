@@ -30,6 +30,7 @@ public static class Program
             config.AddCommand<RestoreCommand>("restore");
             config.AddCommand<BranchCommand>("branch");
             config.AddCommand<SwitchCommand>("switch");
+            config.AddCommand<TagCommand>("tag");
         });
 
         return app.RunAsync(args);

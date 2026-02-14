@@ -6,7 +6,7 @@ namespace GlyphGit.Tests.Integration;
 public sealed class CliFlowTests
 {
     [Fact]
-    public async Task InitAddCommitBranchSwitch_ShouldWork()
+    public async Task InitAddCommitBranchSwitchTag_ShouldWork()
     {
         var temp = Path.Combine(Path.GetTempPath(), "glyphgit-test-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(temp);
@@ -24,9 +24,17 @@ public sealed class CliFlowTests
 
             (await Program.RunAsync(["branch", "feature/x"], Spectre.Console.AnsiConsole.Console)).Should().Be(0);
             (await Program.RunAsync(["switch", "feature/x", "--yes"], Spectre.Console.AnsiConsole.Console)).Should().Be(0);
+            (await Program.RunAsync(["tag", "v0.1.0"], Spectre.Console.AnsiConsole.Console)).Should().Be(0);
+            (await Program.RunAsync(["tag"], Spectre.Console.AnsiConsole.Console)).Should().Be(0);
 
             var head = await File.ReadAllTextAsync(Path.Combine(temp, ".glyphgit", "HEAD"));
             head.Trim().Should().Be("ref: refs/heads/feature/x");
+
+            var tagRef = Path.Combine(temp, ".glyphgit", "refs", "tags", "v0.1.0");
+            File.Exists(tagRef).Should().BeTrue();
+
+            var tagHash = (await File.ReadAllTextAsync(tagRef)).Trim();
+            tagHash.Should().NotBeNullOrWhiteSpace();
         }
         finally
         {
@@ -38,4 +46,3 @@ public sealed class CliFlowTests
         }
     }
 }
-

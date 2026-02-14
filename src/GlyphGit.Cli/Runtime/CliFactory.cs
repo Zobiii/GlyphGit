@@ -40,7 +40,8 @@ public sealed class CliFactory
             new DiffUseCase(repo.IndexStore, repo.RefStore, repo.ObjectStore, repo.WorkingTree, repo.Hasher, logger),
             new RestoreUseCase(repo.IndexStore, repo.RefStore, repo.ObjectStore, repo.WorkingTree, repo.RepositoryLock, logger),
             new BranchUseCase(repo.RefStore, repo.RepositoryLock, logger),
-            new SwitchUseCase(repo.RefStore, repo.IndexStore, repo.ObjectStore, repo.WorkingTree, repo.RepositoryLock, logger));
+            new SwitchUseCase(repo.RefStore, repo.IndexStore, repo.ObjectStore, repo.WorkingTree, repo.RepositoryLock, logger),
+            new TagUseCase(repo.RefStore, repo.RepositoryLock, logger));
     }
 }
 
@@ -54,4 +55,5 @@ public sealed record RuntimeScope(
     DiffUseCase Diff,
     RestoreUseCase Restore,
     BranchUseCase Branch,
-    SwitchUseCase Switch);
+    SwitchUseCase Switch,
+    TagUseCase Tag);

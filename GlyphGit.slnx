@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GlyphGit.Application/GlyphGit.Application.csproj" />
+    <Project Path="src/GlyphGit.Cli/GlyphGit.Cli.csproj" />
+    <Project Path="src/GlyphGit.Domain/GlyphGit.Domain.csproj" />
+    <Project Path="src/GlyphGit.Infrastructure/GlyphGit.Infrastructure.csproj" />
+    <Project Path="src/GlyphGit.Logging/GlyphGit.Logging.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GlyphGit.Tests/GlyphGit.Tests.csproj" />
+  </Folder>
+</Solution>

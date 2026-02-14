@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\GlyphGit.Domain\GlyphGit.Domain.csproj" />
+    <ProjectReference Include="..\GlyphGit.Logging\GlyphGit.Logging.csproj" />
+  </ItemGroup>
+</Project>

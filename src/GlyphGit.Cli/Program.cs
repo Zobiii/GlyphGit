@@ -31,6 +31,7 @@ public static class Program
             config.AddCommand<BranchCommand>("branch");
             config.AddCommand<SwitchCommand>("switch");
             config.AddCommand<TagCommand>("tag");
+            config.AddCommand<CheckoutCommand>("checkout");
         });
 
         return app.RunAsync(args);

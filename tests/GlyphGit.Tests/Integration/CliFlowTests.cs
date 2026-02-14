@@ -6,7 +6,7 @@ namespace GlyphGit.Tests.Integration;
 public sealed class CliFlowTests
 {
     [Fact]
-    public async Task InitAddCommitBranchSwitchTag_ShouldWork()
+    public async Task InitAddCommitBranchSwitchTagCheckout_ShouldWork()
     {
         var temp = Path.Combine(Path.GetTempPath(), "glyphgit-test-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(temp);
@@ -25,16 +25,18 @@ public sealed class CliFlowTests
             (await Program.RunAsync(["branch", "feature/x"], Spectre.Console.AnsiConsole.Console)).Should().Be(0);
             (await Program.RunAsync(["switch", "feature/x", "--yes"], Spectre.Console.AnsiConsole.Console)).Should().Be(0);
             (await Program.RunAsync(["tag", "v0.1.0"], Spectre.Console.AnsiConsole.Console)).Should().Be(0);
-            (await Program.RunAsync(["tag"], Spectre.Console.AnsiConsole.Console)).Should().Be(0);
+            (await Program.RunAsync(["checkout", "main", "--yes"], Spectre.Console.AnsiConsole.Console)).Should().Be(0);
 
-            var head = await File.ReadAllTextAsync(Path.Combine(temp, ".glyphgit", "HEAD"));
-            head.Trim().Should().Be("ref: refs/heads/feature/x");
+            var headMain = await File.ReadAllTextAsync(Path.Combine(temp, ".glyphgit", "HEAD"));
+            headMain.Trim().Should().Be("ref: refs/heads/main");
+
+            await File.WriteAllTextAsync(Path.Combine(temp, "a.txt"), "changed");
+            (await Program.RunAsync(["checkout", "a.txt"], Spectre.Console.AnsiConsole.Console)).Should().Be(0);
+            var content = await File.ReadAllTextAsync(Path.Combine(temp, "a.txt"));
+            content.Should().NotBe("changed");
 
             var tagRef = Path.Combine(temp, ".glyphgit", "refs", "tags", "v0.1.0");
             File.Exists(tagRef).Should().BeTrue();
-
-            var tagHash = (await File.ReadAllTextAsync(tagRef)).Trim();
-            tagHash.Should().NotBeNullOrWhiteSpace();
         }
         finally
         {

@@ -16,6 +16,9 @@ public sealed class RestoreCommand : AsyncCommand<RestoreCommand.Settings>
 
         [CommandArgument(0, "[paths]")]
         public string[] Paths { get; init; } = [];
+
+        [CommandOption("-y|--yes")]
+        public bool Yes { get; init; }
     }
 
     public override ValidationResult Validate(CommandContext context, Settings settings)
@@ -30,9 +33,12 @@ public sealed class RestoreCommand : AsyncCommand<RestoreCommand.Settings>
         var console = ConsoleHost.Console;
         var runtime = new CliFactory(console).Create(forInit: false);
 
-        if (!AnsiConsole.Confirm("Restore selected paths?", true))
+        if (!settings.Yes && console.Profile.Capabilities.Interactive)
         {
-            return 0;
+            if (!AnsiConsole.Confirm("Restore selected paths?", true))
+            {
+                return 0;
+            }
         }
 
         var result = await runtime.Restore.ExecuteAsync(settings.Staged, settings.Worktree, settings.Paths);
